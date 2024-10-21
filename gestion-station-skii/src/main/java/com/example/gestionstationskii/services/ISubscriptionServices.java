@@ -19,4 +19,6 @@ public interface ISubscriptionServices {
 	List<Subscription> retrieveSubscriptionsByDates(LocalDate startDate, LocalDate endDate);
 
 	void retrieveSubscriptions();
+
+    String assignSubscriptionToSkier(Long numSubscription, Long numSkier);
 }

@@ -9,6 +9,7 @@ import com.example.gestionstationskii.repositories.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -73,5 +74,21 @@ public class SubscriptionServicesImpl implements ISubscriptionServices{
                 + subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.SEMESTRIEL)/6
                 + subscriptionRepository.recurringRevenueByTypeSubEquals(TypeSubscription.ANNUAL)/12;
         log.info("Monthly Revenue = " + revenue);
+    }
+    @Override
+    public String assignSubscriptionToSkier(Long numSubscription, Long numSkier) {
+        Optional<Subscription> subscriptionOpt = subscriptionRepository.findById(numSubscription);
+        Optional<Skier> skierOpt = skierRepository.findById(numSkier);
+
+        if (subscriptionOpt.isPresent() && skierOpt.isPresent()) {
+            Skier skier = skierOpt.get();
+            Subscription subscription = subscriptionOpt.get();
+
+            skier.setSubscription(subscription);
+            skierRepository.save(skier); // Save the skier with the new subscription
+
+            return "Subscription assigned to Skier successfully";
+        }
+        return "Skier or Subscription not found";
     }
 }
