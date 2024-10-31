@@ -99,9 +99,11 @@
             <version>0.8.7</version> <!-- Assurez-vous que c'est la dernière version -->
             <executions>
                 <execution>
+                    <id>prepare-agent</id>
                     <goals>
                         <goal>prepare-agent</goal>
                     </goals>
+                    <phase>test</phase>
                 </execution>
                 <execution>
                     <id>report</id>
@@ -111,6 +113,7 @@
                     </goals>
                 </execution>
             </executions>
+
         </plugin>
     </plugins>
 </build>
