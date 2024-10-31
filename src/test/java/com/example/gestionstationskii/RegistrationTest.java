@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class RegistrationTest {
+class RegistrationTest {
 
     @Autowired
     private IRegistrationRepository registrationRepository;
