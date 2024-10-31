@@ -96,7 +96,7 @@
         <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- Assurez-vous que c'est la dernière version -->
+            <version>0.8.7</version>
             <executions>
                 <execution>
                     <id>prepare-agent</id>
@@ -111,9 +111,9 @@
                     <goals>
                         <goal>report</goal>
                     </goals>
+
                 </execution>
             </executions>
-
         </plugin>
     </plugins>
 </build>
