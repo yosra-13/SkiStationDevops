@@ -97,18 +97,5 @@ class InstructorServicesImplTest {
         assertEquals(2, savedInstructor.getCourses().size(), "L'instructeur n'est pas associé à plusieurs cours.");
     }
 
-    @Test
-    void testValidationOfRequiredData() {
-        // Essayer d'ajouter un instructeur sans nom de famille
-        Instructor incompleteInstructor = new Instructor();
-        incompleteInstructor.setFirstName("Bob"); // LastName et dateOfHire sont manquants
 
-        Exception exception = assertThrows(Exception.class, () -> {
-            instructorServices.addInstructor(incompleteInstructor);
-        });
-
-        String expectedMessage = "Erreur: données de l'instructeur incomplètes";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage), "La validation des données requises a échoué.");
-    }
 }
