@@ -105,11 +105,9 @@
             <version>0.8.7</version>
             <executions>
                 <execution>
-                    <id>prepare-agent</id>
                     <goals>
                         <goal>prepare-agent</goal>
                     </goals>
-                    <phase>test</phase>
                 </execution>
                 <execution>
                     <id>report</id>
@@ -117,10 +115,17 @@
                     <goals>
                         <goal>report</goal>
                     </goals>
-
                 </execution>
             </executions>
+            <configuration>
+                <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+                <reports>
+                    <report>xml</report>
+                    <report>html</report>
+                </reports>
+            </configuration>
         </plugin>
+
     </plugins>
 </build>
 
