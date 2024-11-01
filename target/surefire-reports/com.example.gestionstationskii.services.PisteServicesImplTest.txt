@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.gestionstationskii.services.PisteServicesImplTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.675 s - in com.example.gestionstationskii.services.PisteServicesImplTest
