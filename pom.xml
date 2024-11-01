@@ -7,7 +7,9 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.7.5</version>
     <relativePath/> <!-- lookup parent from repository -->
+
 </parent>
+
 <groupId>com.example</groupId>
 <artifactId>gestion-station-skii</artifactId>
 <version>0.0.1-SNAPSHOT</version>
@@ -119,20 +121,19 @@
             </executions>
             <configuration>
                 <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                <reports>
-                    <report>xml</report>
-                    <report>html</report>
-                </reports>
+
             </configuration>
         </plugin>
 
     </plugins>
+
 </build>
-    <distributionManagement>
-        <repository>
-            <id>deploymentRepo</id>
-            <name>Nexus Repository</name>
-        </repository>
-        <url>http://localhost:8081/repository/maven-releases/</url>
-    </distributionManagement>
+
 </project>
+<distributionManagement>
+<repository>
+    <id>deploymentRepo</id>
+    <name>Nexus Repository</name>
+</repository>
+<url>http://localhost:8081/repository/maven-releases/</url>
+</distributionManagement>
