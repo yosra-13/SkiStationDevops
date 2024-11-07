@@ -9,7 +9,7 @@ services:
       - "3306:3306"
   
   app:
-    image: yosraha/projetdevops
+    image: samarsouissi/projetdev
     ports:
       - "8090:8090"
     environment:
