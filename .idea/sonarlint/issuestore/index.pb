@@ -19,8 +19,6 @@ p
 @src/main/java/com/example/gestionstationskii/entities/Skier.java,a\2\a29388406bd24e5a0b975c46d9ea71c02f3268cd
 €
 Psrc/main/java/com/example/gestionstationskii/services/IRegistrationServices.java,7\6\76ef42e0ade1fbda53b4a9a86c3da858d59a7da0
-€
-Psrc/test/java/com/example/gestionstationskii/services/PisteServicesImplTest.java,c\b\cb8511f677f1c17b8349f5afe11d05fc00abc3d1
 
 Osrc/main/java/com/example/gestionstationskii/repositories/IPisteRepository.java,8\9\896c613e0f946c2af310b8ecce14a83de0d01a78
 u
