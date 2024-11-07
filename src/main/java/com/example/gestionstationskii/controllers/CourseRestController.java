@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Tag(name = "\uD83D\uDCDA Course Management")
 @RestController
@@ -65,7 +65,7 @@ public class CourseRestController {
         return courseServices.retrieveAllCourses()
                 .stream()
                 .map(this::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Operation(description = "Update Course")
