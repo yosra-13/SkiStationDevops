@@ -104,29 +104,24 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>/vagrant/gestion-station-skii/target/site/jacoco</outputDirectory>
-                            <reportFormats>
-                                <format>XML</format>
-                            </reportFormats>
+                            <outputDirectory>target/site/jacoco</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
 
             <!-- Sonar Maven Plugin for Code Quality Analysis -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.0.2155</version>
-                <configuration>
-                    <sonar.projectKey>gestion-station-skii</sonar.projectKey>
-                    <sonar.coverage.jacoco.xmlReportPaths>/vagrant/gestion-station-skii/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-                </configuration>
             </plugin>
 
             <!-- Spring Boot Maven Plugin for Executable JAR Creation -->
