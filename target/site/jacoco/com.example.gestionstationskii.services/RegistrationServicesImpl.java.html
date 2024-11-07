@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegistrationServicesImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gestion-station-skii</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionstationskii.services</a> &gt; <span class="el_source">RegistrationServicesImpl.java</span></div><h1>RegistrationServicesImpl.java</h1><pre class="source lang-java linenums">package com.example.gestionstationskii.services;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import com.example.gestionstationskii.entities.*;
+import com.example.gestionstationskii.repositories.*;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+import java.util.Optional;
+
+<span class="nc" id="L15">@Slf4j</span>
+<span class="nc" id="L16">@AllArgsConstructor</span>
+@Service
+public class RegistrationServicesImpl implements IRegistrationServices {
+
+    private final IRegistrationRepository registrationRepository;
+    private final ISkierRepository skierRepository;
+    private final ICourseRepository courseRepository;
+
+    @Override
+    public Registration addRegistrationAndAssignToSkier(Registration registration, Long numSkier) {
+<span class="nc" id="L26">        Skier skier = skierRepository.findById(numSkier).orElse(null);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (skier == null) {</span>
+<span class="nc" id="L28">            log.warn(&quot;Skier with ID {} not found&quot;, numSkier);</span>
+<span class="nc" id="L29">            return null;</span>
+        }
+<span class="nc" id="L31">        registration.setSkier(skier);</span>
+<span class="nc" id="L32">        return registrationRepository.save(registration);</span>
+    }
+
+    @Override
+    public Registration assignRegistrationToCourse(Long numRegistration, Long numCourse) {
+<span class="nc" id="L37">        Registration registration = registrationRepository.findById(numRegistration).orElse(null);</span>
+<span class="nc" id="L38">        Course course = courseRepository.findById(numCourse).orElse(null);</span>
+
+<span class="nc bnc" id="L40" title="All 4 branches missed.">        if (registration == null || course == null) {</span>
+<span class="nc" id="L41">            log.warn(&quot;Registration or Course not found. Registration ID: {}, Course ID: {}&quot;, numRegistration, numCourse);</span>
+<span class="nc" id="L42">            return null;</span>
+        }
+
+<span class="nc" id="L45">        registration.setCourse(course);</span>
+<span class="nc" id="L46">        return registrationRepository.save(registration);</span>
+    }
+
+    @Transactional
+    @Override
+    public Registration addRegistrationAndAssignToSkierAndCourse(Registration registration, Long numSkieur, Long numCours) {
+<span class="nc" id="L52">        Optional&lt;Skier&gt; optionalSkier = skierRepository.findById(numSkieur);</span>
+<span class="nc" id="L53">        Optional&lt;Course&gt; optionalCourse = courseRepository.findById(numCours);</span>
+
+<span class="nc bnc" id="L55" title="All 4 branches missed.">        if (!optionalSkier.isPresent() || !optionalCourse.isPresent()) {</span>
+<span class="nc" id="L56">            log.warn(&quot;Skier or Course not found. Skier ID: {}, Course ID: {}&quot;, numSkieur, numCours);</span>
+<span class="nc" id="L57">            return null;</span>
+        }
+
+<span class="nc" id="L60">        Skier skier = optionalSkier.get();</span>
+<span class="nc" id="L61">        Course course = optionalCourse.get();</span>
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (registrationRepository.countDistinctByNumWeekAndSkier_NumSkierAndCourse_NumCourse(</span>
+<span class="nc" id="L64">                registration.getNumWeek(), skier.getNumSkier(), course.getNumCourse()) &gt;= 1) {</span>
+<span class="nc" id="L65">            log.info(&quot;Already registered to this course for week: {}&quot;, registration.getNumWeek());</span>
+<span class="nc" id="L66">            return null;</span>
+        }
+
+<span class="nc" id="L69">        int ageSkieur = calculateAge(skier.getDateOfBirth());</span>
+<span class="nc" id="L70">        log.info(&quot;Skier's Age: {}&quot;, ageSkieur);</span>
+
+<span class="nc" id="L72">        return handleCourseRegistration(registration, skier, course, ageSkieur);</span>
+    }
+
+    private int calculateAge(LocalDate birthDate) {
+<span class="nc" id="L76">        return Period.between(birthDate, LocalDate.now()).getYears();</span>
+    }
+
+    private Registration handleCourseRegistration(Registration registration, Skier skier, Course course, int ageSkieur) {
+<span class="nc bnc" id="L80" title="All 3 branches missed.">        switch (course.getTypeCourse()) {</span>
+            case INDIVIDUAL:
+<span class="nc" id="L82">                log.info(&quot;Assigning individual course&quot;);</span>
+<span class="nc" id="L83">                return assignRegistration(registration, skier, course);</span>
+
+            case COLLECTIVE_CHILDREN:
+<span class="nc" id="L86">                return registerForCollectiveChildrenCourse(registration, skier, course, ageSkieur);</span>
+
+            default:
+<span class="nc" id="L89">                return registerForAdultCourse(registration, skier, course, ageSkieur);</span>
+        }
+    }
+
+    private Registration registerForCollectiveChildrenCourse(Registration registration, Skier skier, Course course, int ageSkieur) {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (ageSkieur &lt; 16) {</span>
+<span class="nc" id="L95">            log.info(&quot;Valid CHILD registration attempt&quot;);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (isCourseSlotAvailable(course, registration.getNumWeek())) {</span>
+<span class="nc" id="L97">                log.info(&quot;Course successfully added for child.&quot;);</span>
+<span class="nc" id="L98">                return assignRegistration(registration, skier, course);</span>
+            } else {
+<span class="nc" id="L100">                log.info(&quot;Course full. Choose another week.&quot;);</span>
+            }
+        } else {
+<span class="nc" id="L103">            log.info(&quot;Age too high for children course. Try adult course.&quot;);</span>
+        }
+<span class="nc" id="L105">        return null;</span>
+    }
+
+    private Registration registerForAdultCourse(Registration registration, Skier skier, Course course, int ageSkieur) {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (ageSkieur &gt;= 16) {</span>
+<span class="nc" id="L110">            log.info(&quot;Valid ADULT registration attempt&quot;);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            if (isCourseSlotAvailable(course, registration.getNumWeek())) {</span>
+<span class="nc" id="L112">                log.info(&quot;Course successfully added for adult.&quot;);</span>
+<span class="nc" id="L113">                return assignRegistration(registration, skier, course);</span>
+            } else {
+<span class="nc" id="L115">                log.info(&quot;Course full. Choose another week.&quot;);</span>
+            }
+        } else {
+<span class="nc" id="L118">            log.info(&quot;Age too low for adult course. Try children course.&quot;);</span>
+        }
+<span class="nc" id="L120">        return null;</span>
+    }
+
+    private boolean isCourseSlotAvailable(Course course, int numWeek) {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        return registrationRepository.countByCourseAndNumWeek(course, numWeek) &lt; 6;</span>
+    }
+
+    private Registration assignRegistration(Registration registration, Skier skier, Course course) {
+<span class="nc" id="L128">        registration.setSkier(skier);</span>
+<span class="nc" id="L129">        registration.setCourse(course);</span>
+<span class="nc" id="L130">        return registrationRepository.save(registration);</span>
+    }
+
+    @Override
+    public List&lt;Integer&gt; numWeeksCourseOfInstructorBySupport(Long numInstructor, Support support) {
+<span class="nc" id="L135">        return registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SubscriptionRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gestion-station-skii</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionstationskii.controllers</a> &gt; <span class="el_source">SubscriptionRestController.java</span></div><h1>SubscriptionRestController.java</h1><pre class="source lang-java linenums">package com.example.gestionstationskii.controllers;
+
+import com.example.gestionstationskii.entities.Subscription;
+import com.example.gestionstationskii.entities.TypeSubscription;
+import com.example.gestionstationskii.services.ISubscriptionServices;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Tag(name = &quot;\uD83D\uDC65 Subscription Management&quot;)
+@RestController
+@RequestMapping(&quot;/subscription&quot;)
+<span class="nc" id="L19">@RequiredArgsConstructor</span>
+public class SubscriptionRestController {
+
+    private final ISubscriptionServices subscriptionServices;
+
+    // Inner DTO class to encapsulate Subscription data
+<span class="nc" id="L25">    public static class SubscriptionDTO {</span>
+        LocalDate startDate;
+        LocalDate endDate;
+        Float price;
+        String typeSub;
+    }
+
+    // Helper method to convert Subscription entity to DTO
+    private SubscriptionDTO toDTO(Subscription subscription) {
+<span class="nc" id="L34">        SubscriptionDTO dto = new SubscriptionDTO();</span>
+<span class="nc" id="L35">        dto.startDate = subscription.getStartDate();</span>
+<span class="nc" id="L36">        dto.endDate = subscription.getEndDate();</span>
+<span class="nc" id="L37">        dto.price = subscription.getPrice();</span>
+<span class="nc" id="L38">        dto.typeSub = subscription.getTypeSub().name();</span>
+<span class="nc" id="L39">        return dto;</span>
+    }
+
+    // Helper method to convert DTO to Subscription entity
+    private Subscription toEntity(SubscriptionDTO dto) {
+<span class="nc" id="L44">        Subscription subscription = new Subscription();</span>
+<span class="nc" id="L45">        subscription.setStartDate(dto.startDate);</span>
+<span class="nc" id="L46">        subscription.setEndDate(dto.endDate);</span>
+<span class="nc" id="L47">        subscription.setPrice(dto.price);</span>
+<span class="nc" id="L48">        subscription.setTypeSub(TypeSubscription.valueOf(dto.typeSub));</span>
+<span class="nc" id="L49">        return subscription;</span>
+    }
+
+    @Operation(description = &quot;Add Subscription&quot;)
+    @PostMapping(&quot;/add&quot;)
+    public SubscriptionDTO addSubscription(@RequestBody SubscriptionDTO subscriptionDTO) {
+<span class="nc" id="L55">        Subscription subscription = toEntity(subscriptionDTO);</span>
+<span class="nc" id="L56">        Subscription savedSubscription = subscriptionServices.addSubscription(subscription);</span>
+<span class="nc" id="L57">        return toDTO(savedSubscription);</span>
+    }
+
+    @Operation(description = &quot;Retrieve Subscription by Id&quot;)
+    @GetMapping(&quot;/get/{id-subscription}&quot;)
+    public SubscriptionDTO getById(@PathVariable(&quot;id-subscription&quot;) Long numSubscription) {
+<span class="nc" id="L63">        Subscription subscription = subscriptionServices.retrieveSubscriptionById(numSubscription);</span>
+<span class="nc" id="L64">        return toDTO(subscription);</span>
+    }
+
+    @Operation(description = &quot;Retrieve Subscriptions by Type&quot;)
+    @GetMapping(&quot;/all/{typeSub}&quot;)
+    public Set&lt;SubscriptionDTO&gt; getSubscriptionsByType(@PathVariable(&quot;typeSub&quot;) TypeSubscription typeSubscription) {
+<span class="nc" id="L70">        return subscriptionServices.getSubscriptionByType(typeSubscription)</span>
+<span class="nc" id="L71">                .stream()</span>
+<span class="nc" id="L72">                .map(this::toDTO)</span>
+<span class="nc" id="L73">                .collect(Collectors.toSet());</span>
+    }
+
+    @Operation(description = &quot;Update Subscription&quot;)
+    @PutMapping(&quot;/update&quot;)
+    public SubscriptionDTO updateSubscription(@RequestBody SubscriptionDTO subscriptionDTO) {
+<span class="nc" id="L79">        Subscription subscription = toEntity(subscriptionDTO);</span>
+<span class="nc" id="L80">        Subscription updatedSubscription = subscriptionServices.updateSubscription(subscription);</span>
+<span class="nc" id="L81">        return toDTO(updatedSubscription);</span>
+    }
+
+    @Operation(description = &quot;Retrieve Subscriptions created between two dates&quot;)
+    @GetMapping(&quot;/all/{date1}/{date2}&quot;)
+    public List&lt;SubscriptionDTO&gt; getSubscriptionsByDates(
+            @PathVariable(&quot;date1&quot;) LocalDate startDate,
+            @PathVariable(&quot;date2&quot;) LocalDate endDate) {
+<span class="nc" id="L89">        return subscriptionServices.retrieveSubscriptionsByDates(startDate, endDate)</span>
+<span class="nc" id="L90">                .stream()</span>
+<span class="nc" id="L91">                .map(this::toDTO)</span>
+<span class="nc" id="L92">                .collect(Collectors.toList());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
