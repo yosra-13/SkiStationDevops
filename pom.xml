@@ -136,13 +136,16 @@
                 </execution>
                 <execution>
                     <id>report</id>
-                    <phase>test</phase>
                     <goals>
                         <goal>report</goal>
                     </goals>
                 </execution>
             </executions>
+            <configuration>
+                <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
+            </configuration>
         </plugin>
+
         <plugin>
             <groupId>org.sonarsource.scanner.maven</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
@@ -157,10 +160,11 @@
             <configuration>
                 <includes>
                     <include>**/*Test.java</include>
-                    <include>**/*Tests.java</include>
                 </includes>
+                <failIfNoTests>true</failIfNoTests>
             </configuration>
         </plugin>
+
 
 
     </plugins>
