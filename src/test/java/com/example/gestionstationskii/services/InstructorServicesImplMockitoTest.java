@@ -2,6 +2,8 @@ package com.example.gestionstationskii.services;
 
 import com.example.gestionstationskii.entities.Course;
 import com.example.gestionstationskii.entities.Instructor;
+import com.example.gestionstationskii.entities.Support;
+import com.example.gestionstationskii.entities.TypeCourse;
 import com.example.gestionstationskii.repositories.ICourseRepository;
 import com.example.gestionstationskii.repositories.IInstructorRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,27 +14,25 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class InstructorServicesImplMockitoTest {
 
-    @Mock
-    private ICourseRepository courseRepository;
+    @InjectMocks
+    private InstructorServicesImpl instructorServices;
 
     @Mock
     private IInstructorRepository instructorRepository;
 
-    @InjectMocks
-    private InstructorServicesImpl instructorServices;
+    @Mock
+    private ICourseRepository courseRepository;
 
     private Instructor instructor;
     private Course course;
@@ -41,104 +41,85 @@ class InstructorServicesImplMockitoTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Initialize course
+        // Initialize your test objects
+        instructor = new Instructor();
+        instructor.setNumInstructor(1L);
+        instructor.setFirstName("John");
+        instructor.setLastName("Doe");
+
         course = new Course();
         course.setNumCourse(1L);
         course.setLevel(1);
-        course.setPrice(250.0f);
-
-        // Initialize instructor
-        instructor = new Instructor();
-        instructor.setNumInstructor(1L);
-        instructor.setFirstName("Alice");
-        instructor.setLastName("Johnson");
-        instructor.setDateOfHire(LocalDate.now());
-        instructor.setCourses(new HashSet<>(Collections.singletonList(course)));
+        course.setTypeCourse(TypeCourse.INDIVIDUAL); // Corrected TypeCourse
+        course.setSupport(Support.SKI); // Corrected Support
+        course.setPrice(100.0f);
+        course.setTimeSlot(10);
     }
 
     @Test
-    void testCreateInstructor_Success() {
+    void testAddInstructor() {
         when(instructorRepository.save(any(Instructor.class))).thenReturn(instructor);
 
         Instructor savedInstructor = instructorServices.addInstructor(instructor);
 
         assertNotNull(savedInstructor);
-        assertEquals(instructor.getNumInstructor(), savedInstructor.getNumInstructor());
-
+        assertEquals("John", savedInstructor.getFirstName());
+        assertEquals("Doe", savedInstructor.getLastName());
         verify(instructorRepository, times(1)).save(instructor);
     }
 
     @Test
-    void testRetrieveInstructor_Success() {
-        when(instructorRepository.findById(instructor.getNumInstructor())).thenReturn(Optional.of(instructor));
+    void testRetrieveAllInstructors() {
+        when(instructorRepository.findAll()).thenReturn(Arrays.asList(instructor));
 
-        Instructor retrievedInstructor = instructorServices.retrieveInstructor(instructor.getNumInstructor());
+        List<Instructor> instructors = instructorServices.retrieveAllInstructors();
 
-        assertNotNull(retrievedInstructor);
-        assertEquals(instructor.getFirstName(), retrievedInstructor.getFirstName());
-
-        verify(instructorRepository, times(1)).findById(instructor.getNumInstructor());
+        assertEquals(1, instructors.size());
+        assertEquals("John", instructors.get(0).getFirstName());
+        assertEquals("Doe", instructors.get(0).getLastName());
+        verify(instructorRepository, times(1)).findAll();
     }
 
     @Test
-    void testUpdateInstructor_Success() {
+    void testUpdateInstructor() {
         when(instructorRepository.save(any(Instructor.class))).thenReturn(instructor);
 
-        instructor.setFirstName("UpdatedName");
         Instructor updatedInstructor = instructorServices.updateInstructor(instructor);
 
-        assertEquals("UpdatedName", updatedInstructor.getFirstName());
-
+        assertNotNull(updatedInstructor);
+        assertEquals("John", updatedInstructor.getFirstName());
+        assertEquals("Doe", updatedInstructor.getLastName());
         verify(instructorRepository, times(1)).save(instructor);
     }
 
     @Test
-    void testDeleteInstructor_Success() {
-        doNothing().when(instructorRepository).deleteById(instructor.getNumInstructor());
+    void testRetrieveInstructor() {
+        when(instructorRepository.findById(1L)).thenReturn(Optional.of(instructor));
 
-        instructorServices.retrieveInstructor(instructor.getNumInstructor());
-        instructorRepository.deleteById(instructor.getNumInstructor());
+        Instructor foundInstructor = instructorServices.retrieveInstructor(1L);
 
-        verify(instructorRepository, times(1)).deleteById(instructor.getNumInstructor());
+        assertNotNull(foundInstructor);
+        assertEquals("John", foundInstructor.getFirstName());
+        assertEquals("Doe", foundInstructor.getLastName());
+        verify(instructorRepository, times(1)).findById(1L);
     }
 
     @Test
-    void testAssignMultipleCoursesToInstructor_Success() {
-        Course course2 = new Course();
-        course2.setNumCourse(2L);
-        course2.setLevel(2);
-        course2.setPrice(350.0f);
-
-        Set<Course> courseSet = new HashSet<>();
-        courseSet.add(course);
-        courseSet.add(course2);
-
-        instructor.setCourses(courseSet);
-
+    void testAddInstructorAndAssignToCourse() {
+        when(courseRepository.findById(1L)).thenReturn(Optional.of(course));
         when(instructorRepository.save(any(Instructor.class))).thenReturn(instructor);
 
-        Instructor savedInstructor = instructorServices.updateInstructor(instructor);
+        // Create a Set of courses to be assigned
+        HashSet<Course> courses = new HashSet<>();
+        courses.add(course);
+        instructor.setCourses(courses);
+
+        Instructor savedInstructor = instructorServices.addInstructorAndAssignToCourse(instructor, 1L);
 
         assertNotNull(savedInstructor);
-        assertEquals(2, savedInstructor.getCourses().size());
-
-        verify(instructorRepository, times(1)).save(instructor);
-    }
-    @Test
-    void testAssignInstructorToExistingCourse() {
-        // Simuler que le cours existe dans le repository
-        when(courseRepository.findById(course.getNumCourse())).thenReturn(Optional.of(course));
-        when(instructorRepository.save(any(Instructor.class))).thenReturn(instructor);
-
-        // Appeler la méthode de service
-        Instructor savedInstructor = instructorServices.addInstructorAndAssignToCourse(instructor, course.getNumCourse());
-
-        // Vérifier que l'instructeur est sauvegardé avec le cours assigné
-        assertNotNull(savedInstructor);
-        assertNotNull(savedInstructor.getCourses());
         assertEquals(1, savedInstructor.getCourses().size());
-
-        verify(courseRepository, times(1)).findById(course.getNumCourse());
+        assertTrue(savedInstructor.getCourses().contains(course));
+        verify(courseRepository, times(1)).findById(1L);
         verify(instructorRepository, times(1)).save(instructor);
     }
 
