@@ -141,7 +141,7 @@ class SkierMockitoTest {
         verify(skierRepository, times(1)).findBySubscription_TypeSub(TypeSubscription.ANNUAL);
     }*/
     void testRetrieveSkiersBySubscriptionType_Success() {
-        // Créez un objet Subscription avec les valeurs requises
+
         Subscription subscription = new Subscription();
         subscription.setNumSub(1L);
         subscription.setStartDate(LocalDate.now());
@@ -149,28 +149,28 @@ class SkierMockitoTest {
         subscription.setPrice(500f);
         subscription.setTypeSub(TypeSubscription.ANNUAL);
 
-        // Associez cet abonnement à l'objet Skier
+
         Skier skier = new Skier();
         skier.setNumSkier(1L);
         skier.setFirstName("John");
         skier.setLastName("Doe");
         skier.setDateOfBirth(LocalDate.of(1990, 1, 1));
         skier.setCity("Alpes");
-        skier.setSubscription(subscription); // Assurez-vous que l'abonnement est défini
+        skier.setSubscription(subscription);
 
-        // Simulez le comportement du repository
+
         when(skierRepository.findBySubscription_TypeSub(TypeSubscription.ANNUAL))
                 .thenReturn(Collections.singletonList(skier));
 
-        // Appelez la méthode du service
+
         List<Skier> skiers = skierServices.retrieveSkiersBySubscriptionType(TypeSubscription.ANNUAL);
 
-        // Vérifications
-        assertNotNull(skiers);  // Assurez-vous que la liste n'est pas nulle
-        assertFalse(skiers.isEmpty());  // Assurez-vous que la liste contient des éléments
-        assertEquals(TypeSubscription.ANNUAL, skiers.get(0).getSubscription().getTypeSub());  // Vérifiez le type d'abonnement
 
-        // Vérifiez que la méthode du repository a été appelée une fois
+        assertNotNull(skiers);
+        assertFalse(skiers.isEmpty());
+        assertEquals(TypeSubscription.ANNUAL, skiers.get(0).getSubscription().getTypeSub());
+
+
         verify(skierRepository, times(1)).findBySubscription_TypeSub(TypeSubscription.ANNUAL);
     }
 
