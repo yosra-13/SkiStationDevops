@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CourseRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gestion-station-skii</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionstationskii.controllers</a> &gt; <span class="el_source">CourseRestController.java</span></div><h1>CourseRestController.java</h1><pre class="source lang-java linenums">package com.example.gestionstationskii.controllers;
+
+import com.example.gestionstationskii.entities.Course;
+import com.example.gestionstationskii.entities.TypeCourse;
+import com.example.gestionstationskii.entities.Support;
+import com.example.gestionstationskii.services.ICourseServices;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Tag(name = &quot;\uD83D\uDCDA Course Management&quot;)
+@RestController
+@RequestMapping(&quot;/course&quot;)
+<span class="nc" id="L18">@RequiredArgsConstructor</span>
+public class CourseRestController {
+
+    private final ICourseServices courseServices;
+
+    // DTO class for Course data
+<span class="nc" id="L24">    public static class CourseDTO {</span>
+        String typeCourse;
+        String support;
+        float price;
+        int level;
+        int timeSlot;
+    }
+
+    // Helper method to convert CourseDTO to Course entity
+    private Course toEntity(CourseDTO dto) {
+<span class="nc" id="L34">        Course course = new Course();</span>
+<span class="nc" id="L35">        course.setTypeCourse(TypeCourse.valueOf(dto.typeCourse));</span>
+<span class="nc" id="L36">        course.setSupport(Support.valueOf(dto.support));</span>
+<span class="nc" id="L37">        course.setPrice(dto.price);</span>
+<span class="nc" id="L38">        course.setLevel(dto.level);</span>
+<span class="nc" id="L39">        course.setTimeSlot(dto.timeSlot);</span>
+<span class="nc" id="L40">        return course;</span>
+    }
+
+    // Helper method to convert Course entity to CourseDTO
+    private CourseDTO toDTO(Course course) {
+<span class="nc" id="L45">        CourseDTO dto = new CourseDTO();</span>
+<span class="nc" id="L46">        dto.typeCourse = course.getTypeCourse().name();</span>
+<span class="nc" id="L47">        dto.support = course.getSupport().name();</span>
+<span class="nc" id="L48">        dto.price = course.getPrice();</span>
+<span class="nc" id="L49">        dto.level = course.getLevel();</span>
+<span class="nc" id="L50">        dto.timeSlot = course.getTimeSlot();</span>
+<span class="nc" id="L51">        return dto;</span>
+    }
+
+    @Operation(description = &quot;Add Course&quot;)
+    @PostMapping(&quot;/add&quot;)
+    public CourseDTO addCourse(@RequestBody CourseDTO courseDTO) {
+<span class="nc" id="L57">        Course course = toEntity(courseDTO);</span>
+<span class="nc" id="L58">        Course savedCourse = courseServices.addCourse(course);</span>
+<span class="nc" id="L59">        return toDTO(savedCourse);</span>
+    }
+
+    @Operation(description = &quot;Retrieve all Courses&quot;)
+    @GetMapping(&quot;/all&quot;)
+    public List&lt;CourseDTO&gt; getAllCourses() {
+<span class="nc" id="L65">        return courseServices.retrieveAllCourses()</span>
+<span class="nc" id="L66">                .stream()</span>
+<span class="nc" id="L67">                .map(this::toDTO)</span>
+<span class="nc" id="L68">                .collect(Collectors.toList());</span>
+    }
+
+    @Operation(description = &quot;Update Course&quot;)
+    @PutMapping(&quot;/update&quot;)
+    public CourseDTO updateCourse(@RequestBody CourseDTO courseDTO) {
+<span class="nc" id="L74">        Course course = toEntity(courseDTO);</span>
+<span class="nc" id="L75">        Course updatedCourse = courseServices.updateCourse(course);</span>
+<span class="nc" id="L76">        return toDTO(updatedCourse);</span>
+    }
+
+    @Operation(description = &quot;Retrieve Course by Id&quot;)
+    @GetMapping(&quot;/get/{id-course}&quot;)
+    public CourseDTO getById(@PathVariable(&quot;id-course&quot;) Long numCourse) {
+<span class="nc" id="L82">        Course course = courseServices.retrieveCourse(numCourse);</span>
+<span class="nc" id="L83">        return toDTO(course);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

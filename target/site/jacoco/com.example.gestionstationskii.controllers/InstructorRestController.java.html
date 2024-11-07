@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InstructorRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gestion-station-skii</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionstationskii.controllers</a> &gt; <span class="el_source">InstructorRestController.java</span></div><h1>InstructorRestController.java</h1><pre class="source lang-java linenums">package com.example.gestionstationskii.controllers;
+
+import com.example.gestionstationskii.entities.Course;
+import com.example.gestionstationskii.entities.Instructor;
+import com.example.gestionstationskii.services.IInstructorServices;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Tag(name = &quot;\uD83D\uDC69\u200D\uD83C\uDFEB Instructor Management&quot;)
+@RestController
+@RequestMapping(&quot;/instructor&quot;)
+<span class="nc" id="L18">@RequiredArgsConstructor</span>
+public class InstructorRestController {
+
+    private final IInstructorServices instructorServices;
+
+    // DTO for Instructor data
+<span class="nc" id="L24">    public static class InstructorDTO {</span>
+        String firstName;
+        String lastName;
+        LocalDate dateOfHire;
+        Set&lt;Long&gt; courseIds;  // Only IDs of courses
+    }
+
+    // Helper method to map DTO to Instructor entity
+    private Instructor toEntity(InstructorDTO dto) {
+<span class="nc" id="L33">        Instructor instructor = new Instructor();</span>
+<span class="nc" id="L34">        instructor.setFirstName(dto.firstName);</span>
+<span class="nc" id="L35">        instructor.setLastName(dto.lastName);</span>
+<span class="nc" id="L36">        instructor.setDateOfHire(dto.dateOfHire);</span>
+<span class="nc" id="L37">        return instructor; // Courses will be assigned in service logic if needed</span>
+    }
+
+    // Helper method to map Instructor entity to DTO
+    private InstructorDTO toDTO(Instructor instructor) {
+<span class="nc" id="L42">        InstructorDTO dto = new InstructorDTO();</span>
+<span class="nc" id="L43">        dto.firstName = instructor.getFirstName();</span>
+<span class="nc" id="L44">        dto.lastName = instructor.getLastName();</span>
+<span class="nc" id="L45">        dto.dateOfHire = instructor.getDateOfHire();</span>
+<span class="nc" id="L46">        dto.courseIds = instructor.getCourses()</span>
+<span class="nc" id="L47">                .stream()</span>
+<span class="nc" id="L48">                .map(Course::getNumCourse)  // Method reference used here</span>
+<span class="nc" id="L49">                .collect(Collectors.toSet());</span>
+<span class="nc" id="L50">        return dto;</span>
+    }
+
+    @Operation(description = &quot;Add Instructor&quot;)
+    @PostMapping(&quot;/add&quot;)
+    public InstructorDTO addInstructor(@RequestBody InstructorDTO instructorDTO) {
+<span class="nc" id="L56">        Instructor instructor = toEntity(instructorDTO);</span>
+<span class="nc" id="L57">        Instructor savedInstructor = instructorServices.addInstructor(instructor);</span>
+<span class="nc" id="L58">        return toDTO(savedInstructor);</span>
+    }
+
+    @Operation(description = &quot;Add Instructor and Assign To Course&quot;)
+    @PutMapping(&quot;/addAndAssignToCourse/{numCourse}&quot;)
+    public InstructorDTO addAndAssignToInstructor(
+            @RequestBody InstructorDTO instructorDTO,
+            @PathVariable(&quot;numCourse&quot;) Long numCourse) {
+<span class="nc" id="L66">        Instructor instructor = toEntity(instructorDTO);</span>
+<span class="nc" id="L67">        Instructor savedInstructor = instructorServices.addInstructorAndAssignToCourse(instructor, numCourse);</span>
+<span class="nc" id="L68">        return toDTO(savedInstructor);</span>
+    }
+
+    @Operation(description = &quot;Retrieve all Instructors&quot;)
+    @GetMapping(&quot;/all&quot;)
+    public List&lt;InstructorDTO&gt; getAllInstructors() {
+<span class="nc" id="L74">        return instructorServices.retrieveAllInstructors()</span>
+<span class="nc" id="L75">                .stream()</span>
+<span class="nc" id="L76">                .map(this::toDTO)</span>
+<span class="nc" id="L77">                .collect(Collectors.toList());</span>
+    }
+
+    @Operation(description = &quot;Update Instructor&quot;)
+    @PutMapping(&quot;/update&quot;)
+    public InstructorDTO updateInstructor(@RequestBody InstructorDTO instructorDTO) {
+<span class="nc" id="L83">        Instructor instructor = toEntity(instructorDTO);</span>
+<span class="nc" id="L84">        Instructor updatedInstructor = instructorServices.updateInstructor(instructor);</span>
+<span class="nc" id="L85">        return toDTO(updatedInstructor);</span>
+    }
+
+    @Operation(description = &quot;Retrieve Instructor by Id&quot;)
+    @GetMapping(&quot;/get/{id-instructor}&quot;)
+    public InstructorDTO getById(@PathVariable(&quot;id-instructor&quot;) Long numInstructor) {
+<span class="nc" id="L91">        Instructor instructor = instructorServices.retrieveInstructor(numInstructor);</span>
+<span class="nc" id="L92">        return toDTO(instructor);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
