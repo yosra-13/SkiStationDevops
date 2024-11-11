@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>gestion-station-skii</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>gestion-station-skii</name>
     <description>gestion-station-skii</description>
     <properties>
@@ -21,12 +21,15 @@
         <sonar.token>sqa_5770cfef541587f95de003f7193d20f00d339b1e</sonar.token>
     </properties>
 
-    <distributionManagement>
+     <distributionManagement>
         <repository>
             <id>deploymentRepo</id>
-            <name>Nexus Repository</name>
-            <url>http://192.168.33.10:8081/repository/maven-snapshots</url>
+            <url>http://192.168.33.10:8081/repository/maven-releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>deploymentRepo</id>
+            <url>http://192.168.33.10:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <dependencies>
