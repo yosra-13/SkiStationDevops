@@ -18,22 +18,22 @@
         <!-- Define the location of compiled Java classes for SonarQube -->
         <sonar.java.binaries>target/classes</sonar.java.binaries>
 
-        <sonar.token>sqa_5770cfef541587f95de003f7193d20f00d339b1e</sonar.token>
-    </properties>
+        <!-- <sonar.token>sqa_5770cfef541587f95de003f7193d20f00d339b1e</sonar.token>-->
+     </properties>
 
-     <distributionManagement>
-        <repository>
-            <id>deploymentRepo</id>
-            <url>http://192.168.33.10:8081/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>deploymentRepo</id>
-            <url>http://192.168.33.10:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+      <distributionManagement>
+         <repository>
+             <id>deploymentRepo</id>
+             <url>http://192.168.33.10:8081/repository/maven-releases/</url>
+         </repository>
+         <snapshotRepository>
+             <id>deploymentRepo</id>
+             <url>http://192.168.33.10:8081/repository/maven-snapshots/</url>
+         </snapshotRepository>
+     </distributionManagement>
 
-    <dependencies>
-        <!-- Your existing dependencies -->
+     <dependencies>
+         <!-- Your existing dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
