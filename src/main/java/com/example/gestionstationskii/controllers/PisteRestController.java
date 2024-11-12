@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.example.gestionstationskii.services.*;
-import com.example.gestionstationskii.entities.*;
+//import com.example.gestionstationskii.entities.*;
 
 
 import java.util.List;
