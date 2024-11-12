@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.gestionstationskii.SubscriptionTest
--------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 45.105 s - in com.example.gestionstationskii.SubscriptionTest
