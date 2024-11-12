@@ -3,17 +3,25 @@ package com.example.gestionstationskii.services;
 import com.example.gestionstationskii.entities.Piste;
 import com.example.gestionstationskii.repositories.IPisteRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)  // Ensure ordered execution
+@ActiveProfiles("test")
 class PisteServicesImplTest {
 
     @Autowired
