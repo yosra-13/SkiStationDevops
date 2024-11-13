@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.example.gestionstationskii.RegistrationTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.386 s - in com.example.gestionstationskii.RegistrationTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.6 s - in com.example.gestionstationskii.RegistrationTest
