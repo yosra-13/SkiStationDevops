@@ -19,17 +19,17 @@ public class RegistrationRestController {
     @Operation(description = "Add Registration and Assign to Skier")
     @PutMapping("/addAndAssignToSkier/{numSkieur}")
     public Registration addAndAssignToSkier(@RequestBody Registration registration,
-                                            @PathVariable("numSkieur") Long numSkieur)
+                                                     @PathVariable("numSkieur") Long numSkieur)
     {
-        return registrationServices.addRegistrationAndAssignToSkier(registration, numSkieur);
+        return  registrationServices.addRegistrationAndAssignToSkier(registration,numSkieur);
     }
-
     @Operation(description = "Assign Registration to Course")
     @PutMapping("/assignToCourse/{numRegis}/{numSkieur}")
-    public Registration assignToCourse(@PathVariable("numRegis") Long numRegistration,
-                                       @PathVariable("numSkieur") Long numCourse) {
+    public Registration assignToCourse( @PathVariable("numRegis") Long numRegistration,
+                                        @PathVariable("numSkieur") Long numCourse){
         return registrationServices.assignRegistrationToCourse(numRegistration, numCourse);
     }
+
 
     @Operation(description = "Add Registration and Assign to Skier and Course")
     @PutMapping("/addAndAssignToSkierAndCourse/{numSkieur}/{numCourse}")
@@ -37,13 +37,13 @@ public class RegistrationRestController {
                                                      @PathVariable("numSkieur") Long numSkieur,
                                                      @PathVariable("numCourse") Long numCourse)
     {
-        return registrationServices.addRegistrationAndAssignToSkierAndCourse(registration, numSkieur, numCourse);
+        return  registrationServices.addRegistrationAndAssignToSkierAndCourse(registration,numSkieur,numCourse);
     }
 
     @Operation(description = "Numbers of the weeks when an instructor has given lessons in a given support")
     @GetMapping("/numWeeks/{numInstructor}/{support}")
-    public List<Integer> numWeeksCourseOfInstructorBySupport(@PathVariable("numInstructor") Long numInstructor,
-                                                             @PathVariable("support") Support support) {
-        return registrationServices.numWeeksCourseOfInstructorBySupport(numInstructor, support);
+    public List<Integer> numWeeksCourseOfInstructorBySupport(@PathVariable("numInstructor")Long numInstructor,
+                                                                  @PathVariable("support") Support support) {
+        return registrationServices.numWeeksCourseOfInstructorBySupport(numInstructor,support);
     }
 }

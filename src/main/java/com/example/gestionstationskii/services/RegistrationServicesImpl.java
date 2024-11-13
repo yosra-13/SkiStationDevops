@@ -19,19 +19,10 @@ public class RegistrationServicesImpl implements IRegistrationServices {
     private final IRegistrationRepository registrationRepository;
     private final ISkierRepository skierRepository;
     private final ICourseRepository courseRepository;
+
     @Override
     public Registration addRegistrationAndAssignToSkier(Registration registration, Long numSkier) {
-        if (registration == null) {
-            log.warn("Registration object is null");
-            return null;
-        }
-
         Skier skier = skierRepository.findById(numSkier).orElse(null);
-        if (skier == null) {
-            log.warn("Skier with ID {} not found", numSkier);
-            return null;
-        }
-
         registration.setSkier(skier);
         return registrationRepository.save(registration);
     }
@@ -39,17 +30,7 @@ public class RegistrationServicesImpl implements IRegistrationServices {
     @Override
     public Registration assignRegistrationToCourse(Long numRegistration, Long numCourse) {
         Registration registration = registrationRepository.findById(numRegistration).orElse(null);
-        if (registration == null) {
-            log.warn("Registration with ID {} not found", numRegistration);
-            return null;
-        }
-
         Course course = courseRepository.findById(numCourse).orElse(null);
-        if (course == null) {
-            log.warn("Course with ID {} not found", numCourse);
-            return null;
-        }
-
         registration.setCourse(course);
         return registrationRepository.save(registration);
     }
@@ -57,26 +38,38 @@ public class RegistrationServicesImpl implements IRegistrationServices {
     @Transactional
     @Override
     public Registration addRegistrationAndAssignToSkierAndCourse(Registration registration, Long numSkieur, Long numCours) {
-        if (registration == null) {
-            log.warn("Registration object is null");
-            return null;
-        }
-
         Skier skier = skierRepository.findById(numSkieur).orElse(null);
         Course course = courseRepository.findById(numCours).orElse(null);
-
-        if (skier == null) {
-            log.warn("Skier with ID {} not found", numSkieur);
-            return null;
+        if (skier != null && course != null) {
+            registration.setSkier(skier);
+            registration.setCourse(course);
+            return registrationRepository.save(registration);
         }
+        return null;
+    }
 
-        if (course == null) {
-            log.warn("Course with ID {} not found", numCours);
-            return null;
-        }
+    // New method: Retrieve a registration by its ID
+    @Override
+    public Registration retrieveRegistration(Long numRegistration) {
+        return registrationRepository.findById(numRegistration).orElse(null);
+    }
 
-        registration.setSkier(skier);
-        registration.setCourse(course);
+
+
+    // New method: Delete a registration by its ID
+    @Override
+    public void deleteRegistration(Long numRegistration) {
+        registrationRepository.deleteById(numRegistration);
+    }
+
+    // New method: Update an existing registration
+    @Override
+    public Registration updateRegistration(Registration registration) {
         return registrationRepository.save(registration);
+    }
+
+    @Override
+    public List<Integer> numWeeksCourseOfInstructorBySupport(Long numInstructor, Support support) {
+        return registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);
     }
 }

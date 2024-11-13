@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
+
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,8 +25,6 @@ public class Instructor implements Serializable {
 	String firstName;
 	String lastName;
 	LocalDate dateOfHire;
-
 	@OneToMany
-	@JoinColumn(name = "instructor_id") // Optional: if you want to specify the foreign key column
-	private Set<Course> courses;  // Now private
+	Set<Course> courses;
 }

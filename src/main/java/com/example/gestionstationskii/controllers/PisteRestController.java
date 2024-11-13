@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.example.gestionstationskii.services.*;
+//import com.example.gestionstationskii.entities.*;
+
 
 import java.util.List;
 
@@ -20,9 +22,8 @@ public class PisteRestController {
     @Operation(description = "Add Piste")
     @PostMapping("/add")
     public Piste addPiste(@RequestBody Piste piste){
-        return pisteServices.addPiste(piste);
+        return  pisteServices.addPiste(piste);
     }
-
     @Operation(description = "Retrieve all Pistes")
     @GetMapping("/all")
     public List<Piste> getAllPistes(){
@@ -40,4 +41,6 @@ public class PisteRestController {
     public void deleteById(@PathVariable("id-piste") Long numPiste){
         pisteServices.removePiste(numPiste);
     }
+
+
 }
