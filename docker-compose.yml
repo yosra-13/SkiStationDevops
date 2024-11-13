@@ -7,7 +7,7 @@ services:
       MYSQL_DATABASE: mydb
     ports:
       - "3306:3306"
-  
+
   app:
     image: samarsouissi/projetdev
     ports:
