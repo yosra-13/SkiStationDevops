@@ -2,6 +2,7 @@ package com.example.gestionstationskii.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -26,6 +27,6 @@ public class Instructor implements Serializable {
 	String lastName;
 	LocalDate dateOfHire;
 	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Course> courses;
+	private Set<Course> courses = new HashSet<>();
 
 }

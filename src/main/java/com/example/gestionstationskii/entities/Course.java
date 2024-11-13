@@ -27,9 +27,9 @@ public class Course implements Serializable {
 	Long numCourse;
 	int level;
 	@Enumerated(EnumType.STRING)
-	TypeCourse typeCourse;
+	TypeCourse typeCourse=TypeCourse.INDIVIDUAL;
 	@Enumerated(EnumType.STRING)
-	Support support;
+	Support support=Support.SNOWBOARD;
 	Float price;
 	int timeSlot;
 
@@ -37,7 +37,7 @@ public class Course implements Serializable {
 	@OneToMany(mappedBy= "course")
 	 private Set<Registration> registrations;
 	@ManyToOne
-	@JoinColumn(name = "instructor_id")
+	@JoinColumn(name = "instructor_id", nullable = true)
 	Instructor instructor;
 
 

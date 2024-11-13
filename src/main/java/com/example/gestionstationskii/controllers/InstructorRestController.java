@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,12 +44,15 @@ public class InstructorRestController {
         dto.firstName = instructor.getFirstName();
         dto.lastName = instructor.getLastName();
         dto.dateOfHire = instructor.getDateOfHire();
-        dto.courseIds = instructor.getCourses()
-                .stream()
-                .map(Course::getNumCourse)  // Method reference used here
-                .collect(Collectors.toSet());
+        dto.courseIds = instructor.getCourses() != null
+                ? instructor.getCourses().stream()
+                .map(Course::getNumCourse)
+                .collect(Collectors.toSet())
+                : new HashSet<>(); // Use an empty HashSet if courses is null
         return dto;
     }
+
+
 
     @Operation(description = "Add Instructor")
     @PostMapping("/add")
