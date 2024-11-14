@@ -65,14 +65,13 @@ public class CourseRestController {
 
     @Operation(description = "Retrieve all Courses")
     @GetMapping("/all")
-    public List<CourseDTO> getAllCourses() {
-        return courseServices.retrieveAllCourses()
-                .stream()
-                .map(this::toDTO)
-                .toList();
-                .collect(Collectors.toList());
+   public List<CourseDTO> getAllCourses() {
+    return courseServices.retrieveAllCourses()
+            .stream()
+            .map(this::toDTO)
+            .collect(Collectors.toList());  // Only use .collect(Collectors.toList()) here
+}
 
-    }
 
     @Operation(description = "Update Course")
     @PutMapping("/update")
