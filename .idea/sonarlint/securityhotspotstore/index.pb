@@ -178,3 +178,7 @@ Vsrc/main/java/com/example/gestionstationskii/repositories/IRegistrationReposito
 ggestion-station-skii/src/main/java/com/example/gestionstationskii/controllers/CourseRestController.java,f\e\fe509e90b5317c7e661153edc594233ea860f87f
 †
 Vgestion-station-skii/src/main/java/com/example/gestionstationskii/entities/Course.java,6\2\62bd89cdc882d37c5a65875a4c7a0c71a30a7c6e
+t
+Dsrc/test/java/com/example/gestionstationskii/entities/SkierTest.java,a\0\a05b31d7cb619afc9ad97f25ec48a901c4023b96
+^
+.src/test/resources/application-test.properties,5\f\5fa5523417fdd12c4e399061c9d6be3a30829722

@@ -7,9 +7,11 @@ import com.example.gestionstationskii.services.SkierServicesImpl;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
@@ -21,6 +23,7 @@ import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+@ExtendWith(MockitoExtension.class)
 class SkierMockitoTest {
 
     @Mock
@@ -43,7 +46,7 @@ class SkierMockitoTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Initialiser un Skier
+
         skier = new Skier();
         skier.setNumSkier(1L);
         skier.setFirstName("John");
@@ -51,37 +54,19 @@ class SkierMockitoTest {
         skier.setDateOfBirth(LocalDate.of(1995, 1, 1));
         skier.setCity("Mountain City");
 
-        // Initialiser une Subscription
+
         subscription = new Subscription();
         subscription.setNumSub(1L);
         subscription.setTypeSub(TypeSubscription.ANNUAL);
 
-        // Initialiser une Piste
+
         piste = new Piste();
         piste.setNumPiste(1L);
         piste.setNamePiste("Blue Slope");
     }
 
 
-   /* void testAddSkier_Success() {
-        when(skierRepository.save(any(Skier.class))).thenReturn(skier);
 
-        Skier savedSkier = skierServices.addSkier(skier);
-
-        assertNotNull(savedSkier);
-        assertEquals(skier.getNumSkier(), savedSkier.getNumSkier());
-
-        verify(skierRepository, times(1)).save(skier);
-    }*/
-
-  /*  public Skier addSkier(Skier skier) {
-        if (skier.getSubscription() == null) {
-            throw new IllegalArgumentException("Subscription cannot be null");
-        }
-
-        // Autres logiques de traitement...
-        return skierRepository.save(skier);
-    }*/
 
     @Test
     void testRetrieveSkier_Success() {
@@ -129,17 +114,7 @@ class SkierMockitoTest {
     }
 
     @Test
-    /*void testRetrieveSkiersBySubscriptionType_Success() {
-        when(skierRepository.findBySubscription_TypeSub(TypeSubscription.ANNUAL)).thenReturn(Collections.singletonList(skier));
 
-        List<Skier> skiers = skierServices.retrieveSkiersBySubscriptionType(TypeSubscription.ANNUAL);
-
-        assertNotNull(skiers);
-        assertFalse(skiers.isEmpty());
-        assertEquals(TypeSubscription.ANNUAL, skiers.get(0).getSubscription().getTypeSub());
-
-        verify(skierRepository, times(1)).findBySubscription_TypeSub(TypeSubscription.ANNUAL);
-    }*/
     void testRetrieveSkiersBySubscriptionType_Success() {
 
         Subscription subscription = new Subscription();
