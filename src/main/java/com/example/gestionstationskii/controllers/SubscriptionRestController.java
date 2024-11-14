@@ -23,17 +23,10 @@ public class SubscriptionRestController {
 
     // Inner DTO class to encapsulate Subscription data
     public static class SubscriptionDTO {
-<<<<<<< HEAD
-         LocalDate startDate;
-         LocalDate endDate;
-         Float price;
-         String typeSub;
-=======
         LocalDate startDate;
         LocalDate endDate;
         Float price;
         String typeSub;
->>>>>>> gestion_piste
     }
 
     // Helper method to convert Subscription entity to DTO
