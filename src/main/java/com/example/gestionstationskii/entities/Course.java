@@ -20,7 +20,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @FieldDefaults(level=AccessLevel.PRIVATE)
 @Entity
+<<<<<<< HEAD
 public class  Course implements Serializable {
+=======
+public class Course implements Serializable {
+>>>>>>> gestion_piste
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,6 +39,10 @@ public class  Course implements Serializable {
 
 	@JsonIgnore
 	@OneToMany(mappedBy= "course")
+<<<<<<< HEAD
 	 private  Set<Registration> registrations;
+=======
+	private Set<Registration> registrations;
+>>>>>>> gestion_piste
 
 }

@@ -43,7 +43,11 @@ public class Skier implements Serializable {
 
 
 	@OneToMany(mappedBy = "skier")
+<<<<<<< HEAD
 private Set<Registration> registrations;
+=======
+	private Set<Registration> registrations;
+>>>>>>> gestion_piste
 
 
 

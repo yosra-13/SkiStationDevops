@@ -23,11 +23,19 @@ public class PisteRestController {
 
     // DTO class to encapsulate Piste data
     public static class PisteDTO {
+<<<<<<< HEAD
          String namePiste;
          String color;
          int length;
          int slope;
          Set<Long> skierIds; // Exposing only skier IDs
+=======
+        String namePiste;
+        String color;
+        int length;
+        int slope;
+        Set<Long> skierIds; // Exposing only skier IDs
+>>>>>>> gestion_piste
     }
 
     // Helper method to map Piste entity to DTO

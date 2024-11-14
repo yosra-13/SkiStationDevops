@@ -7,9 +7,15 @@ services:
       MYSQL_DATABASE: mydb
     ports:
       - "3306:3306"
+<<<<<<< HEAD
   
   app:
     image: yosraha/projetdevops
+=======
+
+  app:
+    image: samarsouissi/projetdev
+>>>>>>> gestion_piste
     ports:
       - "8090:8090"
     environment:

@@ -10,7 +10,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+<<<<<<< HEAD
 
+=======
+import java.util.stream.Collectors;
+>>>>>>> gestion_piste
 
 @Tag(name = "\uD83D\uDCDA Course Management")
 @RestController
@@ -22,11 +26,19 @@ public class CourseRestController {
 
     // DTO class for Course data
     public static class CourseDTO {
+<<<<<<< HEAD
          String typeCourse;
          String support;
          float price;
          int level;
          int timeSlot;
+=======
+        String typeCourse;
+        String support;
+        float price;
+        int level;
+        int timeSlot;
+>>>>>>> gestion_piste
     }
 
     // Helper method to convert CourseDTO to Course entity
@@ -65,7 +77,11 @@ public class CourseRestController {
         return courseServices.retrieveAllCourses()
                 .stream()
                 .map(this::toDTO)
+<<<<<<< HEAD
                 .toList();
+=======
+                .collect(Collectors.toList());
+>>>>>>> gestion_piste
     }
 
     @Operation(description = "Update Course")

@@ -24,12 +24,21 @@ public class SkierRestController {
 
     // Inner DTO class to encapsulate Skier data
     public static class SkierDTO {
+<<<<<<< HEAD
          String firstName;
          String lastName;
          LocalDate dateOfBirth;
          String city;
          Long subscriptionId;
          Set<Long> pisteIds;  // Only expose Piste IDs
+=======
+        String firstName;
+        String lastName;
+        LocalDate dateOfBirth;
+        String city;
+        Long subscriptionId;
+        Set<Long> pisteIds;  // Only expose Piste IDs
+>>>>>>> gestion_piste
     }
 
     // Helper method to convert Skier entity to DTO

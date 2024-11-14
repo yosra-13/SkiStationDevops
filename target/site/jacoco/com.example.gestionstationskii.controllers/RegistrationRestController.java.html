@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegistrationRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gestion-station-skii</a> &gt; <a href="index.source.html" class="el_package">com.example.gestionstationskii.controllers</a> &gt; <span class="el_source">RegistrationRestController.java</span></div><h1>RegistrationRestController.java</h1><pre class="source lang-java linenums">package com.example.gestionstationskii.controllers;
+
+import com.example.gestionstationskii.entities.Registration;
+import com.example.gestionstationskii.entities.Support;
+import com.example.gestionstationskii.services.IRegistrationServices;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Tag(name = &quot;\uD83D\uDDD3️ Registration Management&quot;)
+@RestController
+@RequestMapping(&quot;/registration&quot;)
+<span class="fc" id="L16">@RequiredArgsConstructor</span>
+public class RegistrationRestController {
+
+    private final IRegistrationServices registrationServices;
+
+    // DTO for Registration Data
+<span class="nc" id="L22">    public static class RegistrationDTO {</span>
+        int numWeek;
+        Long skierId;
+        Long courseId;
+    }
+
+    // Helper method to convert Registration entity to DTO
+    private RegistrationDTO toDTO(Registration registration) {
+<span class="nc" id="L30">        RegistrationDTO dto = new RegistrationDTO();</span>
+<span class="nc" id="L31">        dto.numWeek = registration.getNumWeek();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        dto.skierId = registration.getSkier() != null ? registration.getSkier().getNumSkier() : null;</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        dto.courseId = registration.getCourse() != null ? registration.getCourse().getNumCourse() : null;</span>
+<span class="nc" id="L34">        return dto;</span>
+    }
+
+    // Helper method to convert DTO to Registration entity
+    private Registration toEntity(RegistrationDTO dto) {
+<span class="nc" id="L39">        Registration registration = new Registration();</span>
+<span class="nc" id="L40">        registration.setNumWeek(dto.numWeek);</span>
+<span class="nc" id="L41">        return registration;</span>
+    }
+
+    @Operation(description = &quot;Add Registration and Assign to Skier&quot;)
+    @PutMapping(&quot;/addAndAssignToSkier/{numSkieur}&quot;)
+    public RegistrationDTO addAndAssignToSkier(
+            @RequestBody RegistrationDTO registrationDTO,
+            @PathVariable(&quot;numSkieur&quot;) Long numSkieur) {
+<span class="nc" id="L49">        Registration registration = toEntity(registrationDTO);</span>
+<span class="nc" id="L50">        Registration savedRegistration = registrationServices.addRegistrationAndAssignToSkier(registration, numSkieur);</span>
+<span class="nc" id="L51">        return toDTO(savedRegistration);</span>
+    }
+
+    @Operation(description = &quot;Assign Registration to Course&quot;)
+    @PutMapping(&quot;/assignToCourse/{numRegis}/{numCourse}&quot;)
+    public RegistrationDTO assignToCourse(
+            @PathVariable(&quot;numRegis&quot;) Long numRegistration,
+            @PathVariable(&quot;numCourse&quot;) Long numCourse) {
+<span class="nc" id="L59">        Registration savedRegistration = registrationServices.assignRegistrationToCourse(numRegistration, numCourse);</span>
+<span class="nc" id="L60">        return toDTO(savedRegistration);</span>
+    }
+
+    @Operation(description = &quot;Add Registration and Assign to Skier and Course&quot;)
+    @PutMapping(&quot;/addAndAssignToSkierAndCourse/{numSkieur}/{numCourse}&quot;)
+    public RegistrationDTO addAndAssignToSkierAndCourse(
+            @RequestBody RegistrationDTO registrationDTO,
+            @PathVariable(&quot;numSkieur&quot;) Long numSkieur,
+            @PathVariable(&quot;numCourse&quot;) Long numCourse) {
+<span class="nc" id="L69">        Registration registration = toEntity(registrationDTO);</span>
+<span class="nc" id="L70">        Registration savedRegistration = registrationServices.addRegistrationAndAssignToSkierAndCourse(</span>
+                registration, numSkieur, numCourse);
+<span class="nc" id="L72">        return toDTO(savedRegistration);</span>
+    }
+
+    @Operation(description = &quot;Numbers of the weeks when an instructor has given lessons in a given support&quot;)
+    @GetMapping(&quot;/numWeeks/{numInstructor}/{support}&quot;)
+    public List&lt;Integer&gt; numWeeksCourseOfInstructorBySupport(
+            @PathVariable(&quot;numInstructor&quot;) Long numInstructor,
+            @PathVariable(&quot;support&quot;) Support support) {
+<span class="nc" id="L80">        return registrationServices.numWeeksCourseOfInstructorBySupport(numInstructor, support);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
