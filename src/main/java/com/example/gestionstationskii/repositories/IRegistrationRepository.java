@@ -28,8 +28,5 @@ public interface IRegistrationRepository extends CrudRepository<Registration, Lo
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> gestion_piste
 }
