@@ -134,8 +134,8 @@ public class RegistrationServicesImpl implements IRegistrationServices {
     public List<Integer> numWeeksCourseOfInstructorBySupport(Long numInstructor, Support support) {
         return registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support);
     }
-<<<<<<< HEAD
+
 }
-=======
+
 }
->>>>>>> gestion_piste
+
