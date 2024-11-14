@@ -69,11 +69,9 @@ public class CourseRestController {
         return courseServices.retrieveAllCourses()
                 .stream()
                 .map(this::toDTO)
-<<<<<<< HEAD
                 .toList();
-=======
                 .collect(Collectors.toList());
->>>>>>> gestion_piste
+
     }
 
     @Operation(description = "Update Course")
