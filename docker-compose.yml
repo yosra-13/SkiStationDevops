@@ -1,20 +1,22 @@
-version: '3'
 services:
   mysql:
     image: mysql:8
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: ski_db
     ports:
-      - "3307:3306"
+      - "3308:3306"
 
   app:
-    image: israa1412/projetdevops
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8090:8090"
+      - "8089:8089"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mydb
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ski_db?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     depends_on:
       - mysql
+
