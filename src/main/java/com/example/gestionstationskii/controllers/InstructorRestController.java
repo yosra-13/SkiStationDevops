@@ -22,17 +22,12 @@ public class InstructorRestController {
 
     // DTO for Instructor data
     public static class InstructorDTO {
-<<<<<<< HEAD
-         String firstName;
-         String lastName;
-         LocalDate dateOfHire;
-         Set<Long> courseIds;  // Only IDs of courses
-=======
+
         String firstName;
         String lastName;
         LocalDate dateOfHire;
         Set<Long> courseIds;  // Only IDs of courses
->>>>>>> gestion_piste
+
     }
 
     // Helper method to map DTO to Instructor entity
