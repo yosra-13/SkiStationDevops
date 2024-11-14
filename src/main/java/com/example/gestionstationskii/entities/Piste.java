@@ -5,10 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> gestion_piste
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,10 +31,8 @@ public class Piste implements Serializable {
 	int slope;
 
 	@ManyToMany(mappedBy= "pistes")
-<<<<<<< HEAD
-   private 	Set<Skier> skiers;
-=======
+
+
 	private Set<Skier> skiers;
->>>>>>> gestion_piste
 
 }
