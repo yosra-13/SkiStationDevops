@@ -20,9 +20,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @FieldDefaults(level=AccessLevel.PRIVATE)
 @Entity
-<<<<<<< HEAD
-public class  Course implements Serializable {
-=======
+
+
+
 public class Course implements Serializable {
 
 
