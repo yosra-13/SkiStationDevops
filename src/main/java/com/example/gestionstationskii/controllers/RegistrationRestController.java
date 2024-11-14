@@ -20,15 +20,13 @@ public class RegistrationRestController {
 
     // DTO for Registration Data
     public static class RegistrationDTO {
-<<<<<<< HEAD
          int numWeek;
          Long skierId;
          Long courseId;
-=======
         int numWeek;
         Long skierId;
         Long courseId;
->>>>>>> gestion_piste
+
     }
 
     // Helper method to convert Registration entity to DTO
