@@ -10,11 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-<<<<<<< HEAD
 
-=======
 import java.util.stream.Collectors;
->>>>>>> gestion_piste
+
 
 @Tag(name = "\uD83D\uDCDA Course Management")
 @RestController
