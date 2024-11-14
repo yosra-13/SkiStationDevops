@@ -24,19 +24,13 @@ public class CourseRestController {
 
     // DTO class for Course data
     public static class CourseDTO {
-<<<<<<< HEAD
-         String typeCourse;
-         String support;
-         float price;
-         int level;
-         int timeSlot;
-=======
+
         String typeCourse;
         String support;
         float price;
         int level;
         int timeSlot;
->>>>>>> gestion_piste
+
     }
 
     // Helper method to convert CourseDTO to Course entity
