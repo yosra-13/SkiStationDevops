@@ -93,8 +93,8 @@ public class InstructorRestController {
         Instructor instructor = instructorServices.retrieveInstructor(numInstructor);
         return toDTO(instructor);
     }
-<<<<<<< HEAD
+
 }
-=======
+
 }
->>>>>>> gestion_piste
+
