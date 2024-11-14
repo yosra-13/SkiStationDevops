@@ -22,12 +22,12 @@ import lombok.experimental.FieldDefaults;
 public class Subscription implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	Long numSub;
 	LocalDate startDate;
 	LocalDate endDate;
 	Float price;
-//	@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	TypeSubscription typeSub;
 
 }
